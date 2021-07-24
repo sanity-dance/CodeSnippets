@@ -8,6 +8,12 @@ namespace JacobCore
 {
     public static class Extensions
     {
+        /// <summary>
+        /// Gets a list of all the indices of the given string or char.
+        /// </summary>
+        /// <param name="str">String to search.</param>
+        /// <param name="value">String to search for.</param>
+        /// <returns>List of all indices of the search value within the target string.</returns>
         public static List<int> AllIndicesOf(this string str, string value)
         {
             if(string.IsNullOrEmpty(value))
@@ -19,6 +25,25 @@ namespace JacobCore
             {
                 i = str.IndexOf(value, i);
                 if(i!=-1)
+                {
+                    indices.Add(i);
+                }
+            }
+            return indices;
+        }
+        /// <summary>
+        /// Gets a list of all the indices of the given string or char.
+        /// </summary>
+        /// <param name="str">String to search.</param>
+        /// <param name="value">Char to search for.</param>
+        /// <returns>List of all indices of the search value within the target string.</returns>
+        public static List<int> AllIndicesOf(this string str, char value)
+        {
+            List<int> indices = new List<int>();
+            for (int i = 0; i != -1; i += 1)
+            {
+                i = str.IndexOf(value, i);
+                if (i != -1)
                 {
                     indices.Add(i);
                 }

@@ -51,6 +51,11 @@ namespace JacobCore
             return indices;
         }
 
+        /// <summary>
+        /// Checks if the given JToken is an empty string, contains no array values, has no properties, is null or undefined, or has a JProperty value matching these conditions, depending on type.
+        /// </summary>
+        /// <param name="token">JToken to check. If it is a JProperty, the method will be executed on the name and the value of the JProperty.</param>
+        /// <returns></returns>
         public static bool IsNullOrEmpty(this JToken token)
         {
             if(token == null)
@@ -67,30 +72,43 @@ namespace JacobCore
                     JTokenType.Null => true,
                     JTokenType.Undefined => true,
                     JTokenType.None => string.IsNullOrWhiteSpace(token.ToString()),
-                    JTokenType.Property => ((JProperty)token).Value.IsNullOrEmpty(),
+                    JTokenType.Property => string.IsNullOrWhiteSpace(((JProperty)token).Name) && ((JProperty)token).Value.IsNullOrEmpty(),
                     _ => false
                 };
             }
         }
 
+        /// <summary>
+        /// Searches a JArray for an item of a specific type.
+        /// </summary>
+        /// <typeparam name="T">Type of the item to search for.</typeparam>
+        /// <param name="arr">JArray to search.</param>
+        /// <param name="item">Item to search for.</param>
+        /// <returns>Bool indicating whether or not the array contains the item.</returns>
         public static bool ContainsTyped<T>(this JArray arr, T item)
         {
-            return arr.Any(item =>
+            return arr.Any(it =>
                 {
                     T typed;
                     try
                     {
-                        typed = item.ToObject<T>();
-                        return typed.Equals(item);
+                        typed = it.ToObject<T>();
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine("Couldn't parse array item {0} as type {1}: {2}", item, typeof(T), ex);
+                        Console.WriteLine("Couldn't parse array item {0} as type {1}: {2}", it, typeof(T), ex);
                         return false;
                     }
+                    return typed.Equals(item);
                 });
         }
 
+        /// <summary>
+        /// Counts the instances of a character in a string.
+        /// </summary>
+        /// <param name="input">Input string to search.</param>
+        /// <param name="target">Char to search for.</param>
+        /// <returns>Number of times char occurs in input.</returns>
         public static int CountOfChar(this string input, char target)
         {
             char[] charArray = input.ToCharArray();

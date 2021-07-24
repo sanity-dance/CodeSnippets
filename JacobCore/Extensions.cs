@@ -12,7 +12,7 @@ namespace JacobCore
         {
             if(string.IsNullOrEmpty(value))
             {
-                throw new ArgumentException("The search sring must not be empty.");
+                throw new ArgumentException("The search string must not be empty.");
             }
             List<int> indices = new List<int>();
             for(int i=0; i != -1; i += value.Length)
